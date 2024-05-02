@@ -11,7 +11,9 @@ public class Img2Ascii {
     private double pixVal;
 
     /**
-     *
+     * Constructor of Img2Ascii class.
+     * Initializes a PrintWriter object to write ASCII art to a file named "Ascii_Image".
+     * If file already exists it will be appended to.
      */
     public Img2Ascii() {
         try {
@@ -22,17 +24,16 @@ public class Img2Ascii {
     }
 
     /**
-     *
+     * Converts the specified image to ASCII art.
+     * Load the image, then iterate through all the pixels finding their colour and luminosity which are then matched
+     * to an ASCII char with similar brightness.
      * @param imgName
      */
     private void convert(String imgName){
-        System.out.println("Converting " + imgName + " to ascii....");
-        //read file in
-        try{
-            img = ImageIO.read(new File("Images/" + imgName));
-        }catch (IOException ex){
-            System.out.println(ex);
-        }
+        System.out.println("Converting " + imgName + " to ASCII....");
+
+        loadImg(imgName);
+
         //iterate over pixels finding luminosity and ascii value to match
         for(int i = 0; i < img.getHeight(); i++){
             for(int j = 0; j < img.getWidth(); j++){
@@ -55,9 +56,9 @@ public class Img2Ascii {
     }
 
     /**
-     * Receives the input param of a pixel's luminosity and matches it to an ascii char of similar brightness.
+     * Receives the input param of a pixel's luminosity and matches it to an ASCII char of similar brightness.
      * @param pixVal
-     * @return ascii value matching pixVal.
+     * @return ASCII value matching pixVal.
      */
     private String strChar(double pixVal){
         String str;
@@ -84,7 +85,7 @@ public class Img2Ascii {
     }
 
     /**
-     * Print the ascii value for the pixel.
+     * Print the ASCII value for the pixel.
      * @param str
      */
     private void print(String str){
@@ -95,9 +96,22 @@ public class Img2Ascii {
         }catch (Exception e){}
     }
 
+    /**
+     * Loads an image from the specified file path and assigns it to the 'img' field.
+     * The image file is expected to be located in the "Images" directory.
+     * @param file
+     */
+    private void loadImg(String file){
+        try{
+            img = ImageIO.read(new File("Images/" + file));
+        }catch (IOException ex){
+            System.out.println(ex);
+        }
+    }
+
     public static void main(String[] args) {
         Img2Ascii obj = new Img2Ascii();
-        obj.convert("face.jpg");
+        obj.convert(args[0]);
         System.out.println("Finished!");
     }
 }
